@@ -1,0 +1,81 @@
+# Tomcat
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 1000
+    min-spare-threads: 30
+  port: 10001
+  connection-timeout: 5000ms
+  servlet:
+    context-path: /home-service
+
+spring:
+  # 环境 dev|test|prod
+  profiles:
+    active: dev
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+      enabled: true
+  mvc:
+    throw-exception-if-no-handler-found: true
+#  resources:
+#    add-mappings: false
+#mybatis
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.home.modules.*.entity
+  global-config:
+    #数据库相关配置
+    db-config:
+      logic-delete-field: is_delete
+      logic-delete-value: 0
+      logic-not-delete-value: 1
+    banner: false
+  #原生配置
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    call-setters-on-nulls: true
+    jdbc-type-for-null: 'null'
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#mybatis分页
+pagehelper:
+  reasonable: false
+  support-methods-arguments: true
+  params: count=countSql
+  row-bounds-with-count: true
+  helper-dialect: mysql
+# SocketIO配置
+socketio:
+  # SocketIO端口
+  port: 10002
+  # 连接数大小
+  workCount: 300
+  # 允许客户请求
+  allowCustomRequests: true
+  # 协议升级超时时间(毫秒)，默认10秒，HTTP握手升级为ws协议超时时间
+  upgradeTimeout: 5000
+  # Ping消息超时时间(毫秒)，默认60秒，这个时间间隔内没有接收到心跳消息就会发送超时事件
+  pingTimeout: 60000
+  # Ping消息间隔(毫秒)，默认25秒。客户端向服务器发送一条心跳消息间隔
+  pingInterval: 10000
+  # 设置HTTP交互最大内容长度
+  maxHttpContentLength: 1048576
+  # 设置最大每帧处理数据的长度，防止他人利用大数据来攻击服务器
+  maxFramePayloadLength: 1048576
+service:
+  http: https://www.029aijia.cn
+  # APP模块，是通过jwt认证的，如果要使用APP模块，则需要修改【加密秘钥】
+  jwt:
+    # 加密秘钥
+    secret: xly6tzafrlbdbl3ogyd9dcj4c7gveb81[www.home.com]
+    # token有效时长，7天，单位秒
+    expire: 604800
+    header: token
+  img:
+    format: .png,.jpg,.jpeg
+    path: /data/www/ai-home/file/
+    access: /file/

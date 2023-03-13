@@ -1,0 +1,9 @@
+{
+    "globalStyle": {
+        "usingComponents": {
+            "van-grid": "/wxcomponents/@vant/weapp/grid/index",
+            "van-grid-item": "/wxcomponents/@vant/weapp/grid-item/index",
+            "van-image": "/wxcomponents/@vant/weapp/image/index"
+        }
+    }
+}

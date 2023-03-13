@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.home.modules.generator.dao.ConsultantDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.home.modules.generator.entity.ConsultantEntity" id="consultantMap">
+        <result property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="type" column="type"/>
+        <result property="status" column="status"/>
+        <result property="star" column="star"/>
+        <result property="advisoryCount" column="advisory_count"/>
+        <result property="buyHomeCount" column="buy_home_count"/>
+        <result property="phone" column="phone"/>
+        <result property="idCard" column="id_card"/>
+        <result property="name" column="name"/>
+        <result property="avatar" column="avatar"/>
+        <result property="homeUserId" column="home_user_id"/>
+        <result property="firmId" column="firm_id"/>
+        <result property="project" column="project"/>
+    </resultMap>
+
+    <select id="getFirmServerCountList"
+            parameterType="com.home.modules.generator.dto.ConsultantUserDTO"
+            resultType="com.home.modules.generator.vo.FirmCountVO">
+        SELECT SUM(countd) num, firm_id AS firmId FROM (
+        SELECT COUNT(DISTINCT b.home_user_id) countd, a.firm_id
+        FROM home_consultant a
+        LEFT JOIN home_consultant_user b ON a.id = b.home_consultant_id
+        WHERE 1 = 1
+        <if test="status != null">
+            AND a.status = #{status}
+        </if>
+        <if test="type != null">
+            AND a.type = #{type}
+        </if>
+        GROUP BY a.id
+        ) aa GROUP BY firm_id
+    </select>
+
+    <select id="getHomeConsultantList"
+            parameterType="com.home.modules.generator.dto.ConsultantUserDTO"
+            resultType="com.home.modules.generator.vo.ConsultantVO">
+        SELECT a.id, a.create_time, a.type, a.star, a.advisory_count,
+        a.buy_home_count, a.phone, a.id_card, a.`name`, a.avatar
+        FROM home_consultant a
+        WHERE 1 = 1
+        <if test="status != null">
+            AND a.status = #{status}
+        </if>
+        <if test="type != null">
+            AND a.type = #{type}
+        </if>
+        <if test="firmIds != null">
+            AND firm_id NOT IN
+            <foreach collection="firmIds" item="firmId" index="index" separator="," open="(" close=")">
+                #{firmId}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getConsultantList"
+            parameterType="com.home.modules.generator.dto.ConsultantDTO"
+            resultType="com.home.modules.generator.vo.ConsultantVO">
+        SELECT a.id, a.create_time, a.type, a.star, a.advisory_count, a.status, a.firm_id,
+        a.buy_home_count, a.phone, a.id_card, a.`name`, a.avatar, b.nick_name, b.avatar_url,
+        REPLACE (JSON_EXTRACT(a.project, "$.name"),'"','') project_name
+        FROM home_consultant a
+        LEFT JOIN home_user b ON a.home_user_id = b.id
+        WHERE 1 = 1
+        <if test="status != null">
+            AND a.status = #{status}
+        </if>
+        <if test="firmId != null">
+            AND a.firm_id = #{firmId}
+        </if>
+        <if test="type != null">
+            AND a.type = #{type}
+        </if>
+        <if test="idCard != null and idCard != ''">
+            AND a.id_card LIKE CONCAT('%', #{idCard}, '%')
+        </if>
+        <if test="name != null and name != ''">
+            AND a.name LIKE CONCAT('%', #{name}, '%')
+        </if>
+        <if test="phone != null and phone != ''">
+            AND a.phone LIKE CONCAT('%', #{phone}, '%')
+        </if>
+        <if test="project != null and project != ''">
+            AND a.project LIKE CONCAT('%', #{project}, '%')
+        </if>
+        <if test="startTime != null">
+            AND DATE_FORMAT(a.create_time ,'%Y-%m-%d') <![CDATA[>=]]> DATE_FORMAT(#{startTime} ,'%Y-%m-%d')
+        </if>
+        <if test="endTime != null">
+            AND DATE_FORMAT(a.create_time ,'%Y-%m-%d') <![CDATA[<=]]> DATE_FORMAT(#{endTime} ,'%Y-%m-%d')
+        </if>
+        <!--排序 -->
+        <if test="orderBy != null">
+            ORDER BY
+            <foreach collection="orderBy" item="item" separator=",">
+                ${item.column} ${item.type}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getConsultantUserList" resultType="com.home.modules.generator.vo.ConsultantVO">
+        SELECT a.id, a.create_time, a.type, a.star, a.advisory_count,
+               a.buy_home_count, a.phone, a.id_card, a.`name`, a.avatar
+        FROM home_consultant a
+        LEFT JOIN home_consultant_user b ON b.home_consultant_id = a.id
+        WHERE b.home_user_id = #{userId} AND a.status = 2
+        <if test="type != null">
+            AND a.type = #{type}
+        </if>
+    </select>
+
+    <select id="getConsultantByUserIds" resultType="com.home.modules.generator.vo.ConsultantVO">
+        SELECT id, create_time, type, star, advisory_count,
+                buy_home_count, phone, id_card, `name`, avatar
+        FROM home_consultant a
+        WHERE type = 1 AND `status` = 2 AND home_user_id != #{userId}
+        <if test="evaluationUserId != null">
+            AND home_user_id = #{evaluationUserId}
+        </if>
+        <if test="userIds != null">
+            AND home_user_id IN
+            <foreach collection="userIds" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        ORDER BY RAND() LIMIT 1;
+    </select>
+
+</mapper>

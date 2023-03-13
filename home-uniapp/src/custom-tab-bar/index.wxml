@@ -1,0 +1,17 @@
+<!-- <cover-view class="tab-bar">
+    <cover-view class="tab-bar-border"></cover-view>
+    <cover-view wx:for="{{list}}" wx:key="index" class="tab-bar-item" data-path="{{item.pagePath}}" data-index="{{index}}" bindtap="switchTab">
+        <cover-image src="{{selected === index ? item.selectedIconPath : item.iconPath}}"></cover-image>
+        <cover-view style="color: {{selected === index ? selectedColor : color}}">
+            {{item.text}}
+        </cover-view>
+    </cover-view>
+</cover-view> -->
+
+<van-tabbar active="{{ selected }}" bind:change="onChange" active-color="#c30D23" safe-area-inset-bottom="{{ !unsafe }}">
+    <van-tabbar-item wx:for="{{ list }}" wx:key="index">
+        <image slot="icon" src="{{ item.iconPath }}" mode="aspectFit" style="width: 60rpx; height: 35rpx; padding-top: 10rpx" />
+        <image slot="icon-active" src="{{ item.selectedIconPath }}" mode="aspectFit" style="width: 60rpx; height:35rpx; padding-top: 10rpx" />
+        {{item.text}}
+    </van-tabbar-item>
+</van-tabbar>

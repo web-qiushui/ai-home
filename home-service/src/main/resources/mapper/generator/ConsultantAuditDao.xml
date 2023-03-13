@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.home.modules.generator.dao.ConsultantAuditDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.home.modules.generator.entity.ConsultantAuditEntity" id="consultantAuditMap">
+        <result property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="homeConsultantId" column="home_consultant_id"/>
+        <result property="status" column="status"/>
+        <result property="remark" column="remark"/>
+        <result property="type" column="type"/>
+        <result property="createBy" column="create_by"/>
+        <result property="homeUserId" column="home_user_id"/>
+    </resultMap>
+
+
+</mapper>

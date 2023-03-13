@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.home.modules.sys.dao.SysDatadictDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.home.modules.sys.entity.SysDatadictEntity" id="datadictMap">
+        <result property="id" column="id"/>
+        <result property="status" column="status"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="type" column="type"/>
+        <result property="name" column="name"/>
+        <result property="value" column="value"/>
+        <result property="n1" column="n1"/>
+        <result property="n2" column="n2"/>
+        <result property="n3" column="n3"/>
+        <result property="n4" column="n4"/>
+        <result property="n5" column="n5"/>
+    </resultMap>
+
+    <resultMap type="com.home.common.vo.DatadictVO" id="datadictVOMap">
+        <result property="id" column="id"/>
+        <result property="type" column="type"/>
+        <result property="name" column="name"/>
+        <result property="value" column="value"/>
+        <result property="n1" column="n1"/>
+        <result property="n2" column="n2"/>
+        <result property="n3" column="n3"/>
+        <result property="n4" column="n4"/>
+        <result property="n5" column="n5"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <select id="getDatadict" resultMap="datadictVOMap">
+        SELECT a.* FROM sys_datadict a
+        LEFT JOIN sys_datadict b ON a.n1 = b.type
+        WHERE a.status = 1 AND (b.status = 1 OR b.status IS NULL)
+    </select>
+
+    <select id="getDatadictList" parameterType="com.home.common.dto.DatadictDTO" resultMap="datadictVOMap">
+        SELECT * FROM sys_datadict
+        <where>
+            <if test="status != null " >
+                AND status = #{status}
+            </if>
+            <if test="type != null and type != ''" >
+                AND type = #{type}
+            </if>
+            <if test="name != null and name != ''" >
+                AND name = #{name}
+            </if>
+            <if test="n1 != null and n1 != ''" >
+                AND n1 = #{n1}
+            </if>
+            <if test="n4 != null and n4 != ''" >
+                AND n4 = #{n4}
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.home.modules.generator.dao.StatisticsDao">
+
+    <select id="getOnlineCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT COUNT(DISTINCT home_user_id) FROM home_login WHERE 1 = 1
+        <if test="type == 'day'">
+            AND DATE_FORMAT(create_time ,'%Y-%m-%d') = DATE_FORMAT(NOW() ,'%Y-%m-%d')
+            GROUP BY DAY(create_time)
+        </if>
+        <if test="type == 'month'">
+            AND DATE_FORMAT(create_time ,'%Y-%m') = DATE_FORMAT(NOW() ,'%Y-%m')
+            GROUP BY MONTH(create_time)
+        </if>
+        <if test="type == 'year'">
+            AND DATE_FORMAT(create_time ,'%Y') = DATE_FORMAT(NOW() ,'%Y')
+            GROUP BY YEAR(create_time)
+        </if>
+    </select>
+
+    <select id="getForwardCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM home_evaluation_forward WHERE 1 = 1
+        <if test="type == 'day'">
+            AND DATE_FORMAT(create_time ,'%Y-%m-%d') = DATE_FORMAT(NOW() ,'%Y-%m-%d')
+            GROUP BY DAY(create_time)
+        </if>
+        <if test="type == 'month'">
+            AND DATE_FORMAT(create_time ,'%Y-%m') = DATE_FORMAT(NOW() ,'%Y-%m')
+            GROUP BY MONTH(create_time)
+        </if>
+        <if test="type == 'year'">
+            AND DATE_FORMAT(create_time ,'%Y') = DATE_FORMAT(NOW() ,'%Y')
+            GROUP BY YEAR(create_time)
+        </if>
+    </select>
+
+    <select id="getLikeCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM home_evaluation_like WHERE 1 = 1
+        <if test="type == 'day'">
+            AND DATE_FORMAT(create_time ,'%Y-%m-%d') = DATE_FORMAT(NOW() ,'%Y-%m-%d')
+            GROUP BY DAY(create_time)
+        </if>
+        <if test="type == 'month'">
+            AND DATE_FORMAT(create_time ,'%Y-%m') = DATE_FORMAT(NOW() ,'%Y-%m')
+            GROUP BY MONTH(create_time)
+        </if>
+        <if test="type == 'year'">
+            AND DATE_FORMAT(create_time ,'%Y') = DATE_FORMAT(NOW() ,'%Y')
+            GROUP BY YEAR(create_time)
+        </if>
+    </select>
+
+    <select id="getCommentCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM home_evaluation_comment WHERE 1 = 1
+        <if test="type == 'day'">
+            AND DATE_FORMAT(create_time ,'%Y-%m-%d') = DATE_FORMAT(NOW() ,'%Y-%m-%d')
+            GROUP BY DAY(create_time)
+        </if>
+        <if test="type == 'month'">
+            AND DATE_FORMAT(create_time ,'%Y-%m') = DATE_FORMAT(NOW() ,'%Y-%m')
+            GROUP BY MONTH(create_time)
+        </if>
+        <if test="type == 'year'">
+            AND DATE_FORMAT(create_time ,'%Y') = DATE_FORMAT(NOW() ,'%Y')
+            GROUP BY YEAR(create_time)
+        </if>
+    </select>
+
+    <select id="getCollectCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM home_evaluation_collect WHERE 1 = 1
+        <if test="type == 'day'">
+            AND DATE_FORMAT(create_time ,'%Y-%m-%d') = DATE_FORMAT(NOW() ,'%Y-%m-%d')
+            GROUP BY DAY(create_time)
+        </if>
+        <if test="type == 'month'">
+            AND DATE_FORMAT(create_time ,'%Y-%m') = DATE_FORMAT(NOW() ,'%Y-%m')
+            GROUP BY MONTH(create_time)
+        </if>
+        <if test="type == 'year'">
+            AND DATE_FORMAT(create_time ,'%Y') = DATE_FORMAT(NOW() ,'%Y')
+            GROUP BY YEAR(create_time)
+        </if>
+    </select>
+
+    <select id="getDemandCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM home_demand WHERE 1 = 1
+        <if test="type == 'day'">
+            AND DATE_FORMAT(create_time ,'%Y-%m-%d') = DATE_FORMAT(NOW() ,'%Y-%m-%d')
+            GROUP BY DAY(create_time)
+        </if>
+        <if test="type == 'month'">
+            AND DATE_FORMAT(create_time ,'%Y-%m') = DATE_FORMAT(NOW() ,'%Y-%m')
+            GROUP BY MONTH(create_time)
+        </if>
+        <if test="type == 'year'">
+            AND DATE_FORMAT(create_time ,'%Y') = DATE_FORMAT(NOW() ,'%Y')
+            GROUP BY YEAR(create_time)
+        </if>
+    </select>
+
+    <select id="getEvaluationCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM home_evaluation WHERE 1 = 1 AND type = 1
+        <if test="type == 'day'">
+            AND DATE_FORMAT(create_time ,'%Y-%m-%d') = DATE_FORMAT(NOW() ,'%Y-%m-%d')
+            GROUP BY DAY(create_time)
+        </if>
+        <if test="type == 'month'">
+            AND DATE_FORMAT(create_time ,'%Y-%m') = DATE_FORMAT(NOW() ,'%Y-%m')
+            GROUP BY MONTH(create_time)
+        </if>
+        <if test="type == 'year'">
+            AND DATE_FORMAT(create_time ,'%Y') = DATE_FORMAT(NOW() ,'%Y')
+            GROUP BY YEAR(create_time)
+        </if>
+    </select>
+
+    <select id="getNewsCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM home_evaluation WHERE 1 = 1 AND type = 2
+        <if test="type == 'day'">
+            AND DATE_FORMAT(create_time ,'%Y-%m-%d') = DATE_FORMAT(NOW() ,'%Y-%m-%d')
+            GROUP BY DAY(create_time)
+        </if>
+        <if test="type == 'month'">
+            AND DATE_FORMAT(create_time ,'%Y-%m') = DATE_FORMAT(NOW() ,'%Y-%m')
+            GROUP BY MONTH(create_time)
+        </if>
+        <if test="type == 'year'">
+            AND DATE_FORMAT(create_time ,'%Y') = DATE_FORMAT(NOW() ,'%Y')
+            GROUP BY YEAR(create_time)
+        </if>
+    </select>
+
+
+</mapper>

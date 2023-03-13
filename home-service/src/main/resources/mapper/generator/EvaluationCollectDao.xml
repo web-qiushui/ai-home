@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.home.modules.generator.dao.EvaluationCollectDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.home.modules.generator.entity.EvaluationCollectEntity" id="evaluationCollectMap">
+        <result property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="homeEvaluationId" column="home_evaluation_id"/>
+        <result property="homeUserId" column="home_user_id"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <select id="getEvaluationCollectList" parameterType="java.lang.Integer" resultType="com.home.modules.generator.vo.EvaluationVO">
+        SELECT b.id, b.title, b.description AS content, b.label,b.main_image
+        FROM home_evaluation_collect a
+        LEFT JOIN home_evaluation b ON a.home_evaluation_id = b.id
+        WHERE a.home_user_id = #{userId} AND a.status = 1
+    </select>
+
+
+</mapper>

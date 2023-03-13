@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.home.modules.generator.dao.EvaluationForwardDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.home.modules.generator.entity.EvaluationForwardEntity" id="evaluationForwardMap">
+        <result property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="homeEvaluationId" column="home_evaluation_id"/>
+        <result property="homeUserId" column="home_user_id"/>
+        <result property="forwardCount" column="forward_count"/>
+    </resultMap>
+
+    <select id="getEvaluationForwardList" resultType="com.home.modules.generator.vo.EvaluationVO">
+        SELECT b.id, b.title, b.description AS content, b.label,b.main_image
+        FROM home_evaluation_forward a
+        LEFT JOIN home_evaluation b ON a.home_evaluation_id = b.id
+        WHERE a.home_user_id = #{userId}
+        <if test="search != null and search != ''">
+            AND (
+            b.title LIKE CONCAT('%', #{search}, '%')
+            OR b.description LIKE CONCAT('%', #{search}, '%')
+            OR b.region LIKE CONCAT('%', #{search}, '%')
+            OR b.price LIKE CONCAT('%', #{search}, '%')
+            OR b.area LIKE CONCAT('%', #{search}, '%')
+            OR b.label LIKE CONCAT('%', #{search}, '%')
+            )
+        </if>
+    </select>
+
+</mapper>

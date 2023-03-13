@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.home.modules.generator.dao.ChatRecordDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.home.modules.generator.entity.ChatRecordEntity" id="chatRecordMap">
+        <result property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="homeConsultantUserId" column="home_consultant_user_id"/>
+        <result property="sendId" column="send_id"/>
+        <result property="receiveId" column="receive_id"/>
+        <result property="content" column="content"/>
+        <result property="type" column="type"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <update id="updateStatus" parameterType="java.lang.Integer">
+        UPDATE home_chat_record SET `status` = 1
+        WHERE home_consultant_user_id = #{consultantUserId}
+        AND receive_id = #{userId}
+    </update>
+
+    <select id="getHistoryRecord" resultType="com.home.common.vo.MessageVO" parameterType="java.lang.Integer">
+        SELECT id, create_time, send_id, receive_id, content, type, `status`
+        FROM home_chat_record
+        WHERE 1 = 1
+        <if test="consultantUserId != null">
+            AND home_consultant_user_id = #{consultantUserId}
+        </if>
+        <if test="userId != null">
+            AND (send_id = #{userId} OR receive_id = #{userId})
+        </if>
+        ORDER BY id DESC
+    </select>
+
+    <select id="getChatRecordByUuidAndType" resultMap="chatRecordMap">
+        SELECT * FROM home_chat_record
+        WHERE 1 = 1 AND type = #{type} AND JSON_EXTRACT(content, "$.uuid") = #{uuid}
+    </select>
+
+</mapper>

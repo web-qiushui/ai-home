@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.home.modules.generator.dao.ConsultantUserDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.home.modules.generator.entity.ConsultantUserEntity" id="userConsultantMap">
+        <result property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="homeConsultantId" column="home_consultant_id"/>
+        <result property="homeUserId" column="home_user_id"/>
+        <result property="homeConsultantUserId" column="home_consultant_user_id"/>
+        <result property="recommendId" column="recommend_id"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <select id="getBuddyInfo" parameterType="java.lang.Integer" resultType="com.home.modules.generator.vo.ConsultantUserVO">
+        SELECT a.id,a.home_consultant_id AS consultant_id, a.home_user_id AS user_id, a.home_consultant_user_id AS consultant_user_id,
+               b.nick_name, b.avatar_url, c.name, c.avatar, c.type
+        FROM home_consultant_user a
+        LEFT JOIN home_user b ON a.home_user_id = b.id
+        LEFT JOIN home_consultant c ON a.home_consultant_id = c.id
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="getBuddyList" parameterType="java.lang.Integer" resultType="com.home.modules.generator.vo.ConsultantUserVO">
+        SELECT a.id,a.home_consultant_id AS consultant_id, a.home_user_id AS user_id, a.home_consultant_user_id AS consultant_user_id,
+               b.nick_name, b.avatar_url, c.name, c.avatar, c.type, d.create_time, d.content AS news, d.type AS news_type, e.unread
+        FROM home_consultant_user a
+        LEFT JOIN home_user b ON a.home_user_id = b.id
+        LEFT JOIN home_consultant c ON a.home_consultant_id = c.id
+        LEFT JOIN (SELECT create_time, content, type, home_consultant_user_id FROM home_chat_record a
+              WHERE a.id IN (SELECT MAX(id) id FROM home_chat_record GROUP BY home_consultant_user_id)) d
+               ON d.home_consultant_user_id = a.id
+        LEFT JOIN (SELECT COUNT(id) unread, home_consultant_user_id FROM home_chat_record
+              WHERE `status` = 0 GROUP BY home_consultant_user_id) e
+             ON e.home_consultant_user_id = a.id
+        WHERE a.home_user_id = #{userId} OR a.home_consultant_user_id = #{userId}
+        ORDER BY d.create_time DESC
+    </select>
+
+    <select id="getConsultantUserList" resultType="com.home.modules.generator.vo.ConsultantUserVO">
+        SELECT a.id,a.home_consultant_id AS consultant_id, a.home_user_id AS user_id, a.home_consultant_user_id AS consultant_user_id,
+               b.nick_name, b.avatar_url, c.name, c.avatar, c.type, a.create_time
+        FROM home_consultant_user a
+        LEFT JOIN home_user b ON a.home_user_id = b.id
+        LEFT JOIN home_consultant c ON a.home_consultant_id = c.id
+    </select>
+
+</mapper>

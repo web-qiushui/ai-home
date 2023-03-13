@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.home.modules.generator.dao.LoginDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.home.modules.generator.entity.LoginEntity" id="loginMap">
+        <result property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="homeUserId" column="home_user_id"/>
+        <result property="ip" column="ip"/>
+    </resultMap>
+
+    <select id="getLoginStatistics" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT COUNT(DISTINCT home_user_id) FROM home_login WHERE 1 = 1
+        <if test="type == day">
+            AND DATE_FORMAT(create_time ,'%Y-%m-%d') = DATE_FORMAT(NOW() ,'%Y-%m-%d')
+            GROUP BY DAY(create_time)
+        </if>
+        <if test="type == month">
+            AND DATE_FORMAT(create_time ,'%Y-%m') = DATE_FORMAT(NOW() ,'%Y-%m')
+            GROUP BY MONTH(create_time)
+        </if>
+        <if test="type == year">
+            AND DATE_FORMAT(create_time ,'%Y') = DATE_FORMAT(NOW() ,'%Y')
+            GROUP BY YEAR(create_time)
+        </if>
+    </select>
+
+
+</mapper>

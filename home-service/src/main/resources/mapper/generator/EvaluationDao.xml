@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.home.modules.generator.dao.EvaluationDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.home.modules.generator.entity.EvaluationEntity" id="evaluationMap">
+        <result property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="status" column="status"/>
+        <result property="title" column="title"/>
+        <result property="author" column="author"/>
+        <result property="original" column="original"/>
+        <result property="thePublicName" column="the_public_name"/>
+        <result property="description" column="description"/>
+        <result property="likeCount" column="like_count"/>
+        <result property="commentCount" column="comment_count"/>
+        <result property="collectCount" column="collect_count"/>
+        <result property="forwardCount" column="forward_count"/>
+        <result property="label" column="label"/>
+        <result property="type" column="type"/>
+        <result property="mainImage" column="main_image"/>
+        <result property="homeUserId" column="home_user_id"/>
+        <result property="sysUserId" column="sys_user_id"/>
+    </resultMap>
+
+    <select id="getMainPageInfo" parameterType="com.home.modules.generator.dto.EvaluationDTO"
+            resultType="com.home.modules.generator.vo.EvaluationListVO">
+        SELECT id, title, description AS content, label AS label_str,main_image
+        FROM home_evaluation
+        WHERE 1=1
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+        <if test="type != null">
+            AND type = #{type}
+        </if>
+        <if test="region != null and region != ''">
+            AND region = #{region}
+        </if>
+        <if test="price != null and price != ''">
+            AND price = #{price}
+        </if>
+        <if test="area != null and area != ''">
+            AND area = #{area}
+        </if>
+        <if test="label != null">
+            AND JSON_CONTAINS(label,JSON_ARRAY(
+            <foreach collection="label" item="lab" index="index" separator=",">
+                #{lab}
+            </foreach>
+            ))
+        </if>
+        <!--模糊查询 -->
+        <if test="search != null and search != ''">
+            AND (
+            title LIKE CONCAT('%', #{search}, '%')
+            OR description LIKE CONCAT('%', #{search}, '%')
+            OR region LIKE CONCAT('%', #{search}, '%')
+            OR price LIKE CONCAT('%', #{search}, '%')
+            OR area LIKE CONCAT('%', #{search}, '%')
+            OR label LIKE CONCAT('%', #{search}, '%')
+            )
+        </if>
+        <!--排序 -->
+        <if test="orderBy != null">
+            ORDER BY
+            <foreach collection="orderBy" item="item" separator=",">
+                ${item.column} ${item.type}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="get24hNews" parameterType="com.home.modules.generator.dto.EvaluationDTO"
+            resultType="com.home.modules.generator.vo.EvaluationListVO">
+        SELECT a.id, a.create_time, a.title, a.like_count, b.content, a.forward_count
+        FROM home_evaluation a
+        LEFT JOIN home_evaluation_details b ON a.id = b.id
+        WHERE 1=1
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+        <if test="type != null">
+            AND a.type = #{type}
+        </if>
+        ORDER BY a.create_time DESC
+    </select>
+
+    <select id="getRecommendList" parameterType="com.home.modules.generator.dto.EvaluationDTO"
+            resultType="com.home.modules.generator.vo.EvaluationListVO">
+        SELECT id, title FROM home_evaluation
+        WHERE id != #{id}
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+        <if test="type != null">
+            AND type = #{type}
+        </if>
+        <if test="region != null and region != ''">
+            AND region = #{region}
+        </if>
+        <if test="price != null and price != ''">
+            AND price = #{price}
+        </if>
+        <if test="area != null and area != ''">
+            AND area = #{area}
+        </if>
+        <if test="label != null">
+            AND JSON_CONTAINS(label,JSON_ARRAY(
+            <foreach collection="label" item="lab" index="index" separator=",">
+                #{lab}
+            </foreach>
+            ))
+        </if>
+        ORDER BY RAND() LIMIT 3
+    </select>
+
+    <select id="getEvaluationList" parameterType="com.home.modules.generator.dto.EvaluationDTO"
+            resultType="com.home.modules.generator.vo.EvaluationVO">
+        SELECT id, author, title, label AS label_str, like_count, forward_count, collect_count,
+        comment_count, create_time, status, the_public_name, original
+        FROM home_evaluation
+        WHERE 1=1
+        <!--模糊查询 -->
+        <if test="search != null and search != ''">
+            AND (
+            title LIKE CONCAT('%', #{search}, '%')
+            OR description LIKE CONCAT('%', #{search}, '%')
+            OR region LIKE CONCAT('%', #{search}, '%')
+            OR price LIKE CONCAT('%', #{search}, '%')
+            OR area LIKE CONCAT('%', #{search}, '%')
+            OR label LIKE CONCAT('%', #{search}, '%')
+            )
+        </if>
+        <if test="sysUserId != null">
+            AND sys_user_id = #{sysUserId}
+        </if>
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+        <if test="type != null">
+            AND type = #{type}
+        </if>
+        <if test="region != null and region != ''">
+            AND region = #{region}
+        </if>
+        <if test="price != null and price != ''">
+            AND price = #{price}
+        </if>
+        <if test="area != null and area != ''">
+            AND area = #{area}
+        </if>
+        <if test="label != null">
+            AND JSON_CONTAINS(label,JSON_ARRAY(
+            <foreach collection="label" item="lab" index="index" separator=",">
+                #{lab}
+            </foreach>
+            ))
+        </if>
+        <if test="startTime != null">
+            AND DATE_FORMAT(create_time ,'%Y-%m-%d') <![CDATA[>=]]> DATE_FORMAT(#{startTime} ,'%Y-%m-%d')
+        </if>
+        <if test="endTime != null">
+            AND DATE_FORMAT(create_time ,'%Y-%m-%d') <![CDATA[<=]]> DATE_FORMAT(#{endTime} ,'%Y-%m-%d')
+        </if>
+        <!--排序 -->
+        <if test="orderBy != null">
+            ORDER BY
+            <foreach collection="orderBy" item="item" separator=",">
+                ${item.column} ${item.type}
+            </foreach>
+        </if>
+    </select>
+</mapper>

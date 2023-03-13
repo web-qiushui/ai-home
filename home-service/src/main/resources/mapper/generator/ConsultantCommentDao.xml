@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.home.modules.generator.dao.ConsultantCommentDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.home.modules.generator.entity.ConsultantCommentEntity" id="consultantCommentMap">
+        <result property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="homeConsultantId" column="home_consultant_id"/>
+        <result property="comment" column="comment"/>
+        <result property="star" column="star"/>
+        <result property="homeUserId" column="home_user_id"/>
+    </resultMap>
+
+    <select id="getConsultantCommentList" parameterType="com.home.modules.generator.dto.ConsultantCommentDTO" resultType="com.home.modules.generator.vo.ConsultantCommentVO">
+        SELECT a.id, b.create_time, a.home_consultant_id AS consultant_id, a.home_user_id AS user_id, a.`comment`, a.star, b.`name`, b.avatar
+        FROM home_consultant_comment a
+        LEFT JOIN home_consultant b ON a.home_consultant_id = b.id
+        WHERE 1 = 1 AND b.status = 2
+        <if test="userId != null">
+            AND a.home_user_id = #{userId}
+        </if>
+        <if test="consultantId != null">
+            AND a.home_consultant_id = #{consultantId}
+        </if>
+        <!--排序 -->
+        <if test="orderBy != null">
+            ORDER BY
+            <foreach collection="orderBy" item="item" separator=",">
+                ${item.column} ${item.type}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getConsultantComment" parameterType="java.lang.Integer" resultType="com.home.modules.generator.vo.ConsultantCommentVO">
+        SELECT a.id, a.create_time, a.home_consultant_id AS consultant_id, a.home_user_id AS user_id,
+               a.`comment`, a.star, b.nick_name AS name, b.avatar_url AS avatar
+        FROM home_consultant_comment a
+        LEFT JOIN home_user b ON a.home_user_id = b.id
+        WHERE 1 = 1 AND a.home_consultant_id = #{consultantId} ORDER BY a.create_time DESC
+    </select>
+
+    <select id="getStarAndCount" parameterType="java.lang.Integer" resultType="com.home.modules.generator.vo.StarAndCountVO">
+        SELECT IFNULL(COUNT(id),0) AS countd, IFNULL(SUM(star),0) star
+        FROM home_consultant_comment WHERE home_consultant_id = #{consultentId}
+    </select>
+
+</mapper>

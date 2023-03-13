@@ -1,0 +1,315 @@
+{
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "AI家",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/home/home",
+      "style": {
+        "navigationBarTitleText": "AI家",
+        "navigationStyle": "custom",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/me/me",
+      "style": {
+        "navigationBarTitleText": "我的",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/anouncement/anouncement",
+      "style": {
+        "navigationBarTitleText": "发布购房需求",
+        "enablePullDownRefresh": false,
+        "disableScroll": true
+      }
+    },
+    {
+      "path": "pages/login/login",
+      "style": {
+        "navigationBarTitleText": "登陆"
+      }
+    },
+    {
+      "path": "pages/message/message",
+      "style": {
+        "navigationBarTitleText": "消息",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/message/conversation",
+      "style": {
+        "navigationBarTitleText": "聊天"
+      }
+    },
+    {
+      "path": "components/assessment-filter/index"
+    },
+    {
+      "path": "components/assessment-sort/index"
+    },
+    {
+      "path": "pages/home/guide",
+      "style": {
+        "navigationBarTitleText": "AI家",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/register/register",
+      "style": {
+        "navigationBarTitleText": "注册登录"
+      }
+    },
+    {
+      "path": "components/ellipsis-card"
+    },
+    {
+      "path": "components/message-card"
+    },
+    {
+      "path": "components/message-emoji"
+    },
+    {
+      "path": "components/message-more-input"
+    }
+  ],
+  "subPackages": [
+    {
+      "root": "newsPages",
+      "pages": [
+        {
+          "path": "pages/kingkong/news",
+          "style": {
+            "navigationBarTitleText": "24h快讯",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
+          "path": "pages/kingkong/registering",
+          "style": {
+            "navigationBarTitleText": "正在登记",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
+          "path": "pages/kingkong/presale",
+          "style": {
+            "navigationBarTitleText": "开盘预告",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
+          "path": "pages/evaluation/list",
+          "style": {
+            "navigationBarTitleText": "测评列表",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
+          "path": "pages/evaluation/detail",
+          "style": {
+            "navigationBarTitleText": "测评报告"
+          }
+        },
+        {
+          "path": "pages/evaluation/comment",
+          "style": {
+            "navigationBarTitleText": "评论"
+          }
+        },
+        {
+          "path": "pages/person/myshare",
+          "style": {
+            "navigationBarTitleText": "我的分享",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
+          "path": "pages/person/myanouncement",
+          "style": {
+            "navigationBarTitleText": "我的发布",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
+          "path": "pages/person/mycounselor",
+          "style": {
+            "navigationBarTitleText": "我的顾问",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
+          "path": "pages/person/userinfo",
+          "style": {
+            "navigationBarTitleText": "我的资料"
+          }
+        },
+        {
+          "path": "pages/person/modifyinfo",
+          "style": {
+            "navigationBarTitleText": "修改个人资料"
+          }
+        },
+        {
+          "path": "pages/person/agreement",
+          "style": {
+            "navigationBarTitleText": "用户协议"
+          }
+        },
+        {
+          "path": "pages/person/evaluate",
+          "style": {
+            "navigationBarTitleText": "我的评价",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
+          "path": "pages/person/mycomment",
+          "style": {
+            "navigationBarTitleText": "我的评论",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
+          "path": "pages/person/evaluating",
+          "style": {
+            "navigationBarTitleText": "评价"
+          }
+        },
+        {
+          "path": "pages/anouncement/anouncementdetail",
+          "style": {
+            "navigationBarTitleText": "发布详情"
+          }
+        },
+        {
+          "path": "pages/anouncement/counselordetail",
+          "style": {
+            "navigationBarTitleText": "顾问详情"
+          }
+        },
+        {
+          "path": "pages/person/myattention",
+          "style": {
+            "navigationBarTitleText": "我的关注",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
+          "path": "pages/person/certification",
+          "style": {
+            "navigationBarTitleText": "身份认证"
+          }
+        },
+        {
+          "path": "pages/person/projectcertification",
+          "style": {
+            "navigationBarTitleText": "所属项目"
+          }
+        }
+      ]
+    }
+  ],
+  "preloadRule": {
+    "pages/index/index": {
+      "packages": [
+        "newsPages"
+      ],
+      "network": "all"
+    }
+  },
+  "globalStyle": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "AI家",
+    "navigationBarBackgroundColor": "#C30D23",
+    "backgroundColor": "#FFFFFF",
+    "usingComponents": {
+      "van-button": "/wxcomponents/@vant/weapp/button/index",
+      "van-grid": "/wxcomponents/@vant/weapp/grid/index",
+      "van-grid-item": "/wxcomponents/@vant/weapp/grid-item/index",
+      "van-image": "/wxcomponents/@vant/weapp/image/index",
+      "van-search": "/wxcomponents/@vant/weapp/search/index",
+      "van-dropdown-menu": "/wxcomponents/@vant/weapp/dropdown-menu/index",
+      "van-dropdown-item": "/wxcomponents/@vant/weapp/dropdown-item/index",
+      "van-row": "/wxcomponents/@vant/weapp/row/index",
+      "van-col": "/wxcomponents/@vant/weapp/col/index",
+      "van-tag": "/wxcomponents/@vant/weapp/tag/index",
+      "van-sticky": "/wxcomponents/@vant/weapp/sticky/index",
+      "van-tabbar": "/wxcomponents/@vant/weapp/tabbar/index",
+      "van-tabbar-item": "/wxcomponents/@vant/weapp/tabbar-item/index",
+      "assessment-filter": "/components/assessment-filter/index",
+      "assessment-sort": "/components/assessment-sort/index",
+      "new-comer-guide": "/pages/home/guide",
+      "van-checkbox": "/wxcomponents/@vant/weapp/checkbox/index",
+      "Toast": "/wxcomponents/@vant/weapp/toast/index",
+      "van-field": "/wxcomponents/@vant/weapp/field/index",
+      "van-tabs": "/wxcomponents/@vant/weapp/tabs/index",
+      "van-tab": "/wxcomponents/@vant/weapp/tab/index",
+      "van-rate": "/wxcomponents/@vant/weapp/rate/index",
+      "van-overlay": "/wxcomponents/@vant/weapp/overlay/index",
+      "van-icon": "/wxcomponents/@vant/weapp/icon/index",
+      "van-dialog": "/wxcomponents/@vant/weapp/dialog/index",
+      "van-popup": "/wxcomponents/@vant/weapp/popup/index",
+      "guide-tab-bar": "/custom-tab-bar/index",
+      "ellipsis-card": "/components/ellipsis-card",
+      "message-card": "/components/message-card",
+      "message-emoji": "/components/message-emoji",
+      "message-more-input": "components/message-more-input",
+      "van-area": "/wxcomponents/@vant/weapp/area/index"
+    }
+  },
+  "tabBar": {
+    "customtabbar": false,
+    "custom": true,
+    "color": "#7A7E83",
+    "selectedColor": "#c30D23",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "height": "50px",
+    "fontSize": "10px",
+    "iconWidth": "24px",
+    "spacing": "3px",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "iconPath": "static/ai-icon-home.png",
+        "selectedIconPath": "static/ai-icon-home-active.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/anouncement/anouncement",
+        "iconPath": "static/ai-icon-add.png",
+        "selectedIconPath": "static/ai-icon-add-active.png",
+        "text": "发布"
+      },
+      {
+        "pagePath": "pages/message/message",
+        "iconPath": "static/ai-icon-msg.png",
+        "selectedIconPath": "static/ai-icon-msg-active.png",
+        "text": "消息"
+      },
+      {
+        "pagePath": "pages/me/me",
+        "iconPath": "static/ai-icon-me.png",
+        "selectedIconPath": "static/ai-icon-me-active.png",
+        "text": "我的"
+      }
+    ],
+    "midButton": {
+      "width": "80px",
+      "height": "50px",
+      "text": "文字",
+      "iconPath": "static/image/midButton_iconPath.png",
+      "iconWidth": "24px",
+      "backgroundImage": "static/image/midButton_backgroundImage.png"
+    }
+  }
+}

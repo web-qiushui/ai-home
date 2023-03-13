@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.home.modules.generator.dao.DemandDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.home.modules.generator.entity.DemandEntity" id="demandMap">
+        <result property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="region" column="region"/>
+        <result property="price" column="price"/>
+        <result property="area" column="area"/>
+        <result property="label" column="label"/>
+        <result property="explanation" column="explanation"/>
+        <result property="phone" column="phone"/>
+        <result property="homeUserId" column="home_user_id"/>
+        <result property="intentions" column="intentions"/>
+        <result property="aiConsultantId" column="ai_consultant_id"/>
+        <result property="homeConsultantId" column="home_consultant_id"/>
+        <result property="isDelete" column="is_delete"/>
+    </resultMap>
+
+    <!--根据用户ID查询我的发布 -->
+    <select id="getMyPublishByUserId" parameterType="integer" resultType="com.home.modules.generator.vo.DemandVO">
+        SELECT id, create_time, region, price, area, label AS label_str, explanation, phone, intentions
+        FROM home_demand
+        WHERE home_user_id=#{userId} AND is_delete = 1 ORDER BY create_time DESC
+    </select>
+
+    <select id="getDemandList" parameterType="com.home.modules.generator.dto.DemandDTO"
+            resultType="com.home.modules.generator.vo.DemandVO">
+        SELECT a.id, a.create_time, a.region, a.price, a.area, a.label AS label_str,
+        a.explanation, a.phone, a.intentions, b.nick_name, b.avatar_url
+        FROM home_demand a
+        LEFT JOIN home_user b ON a.home_user_id = b.id
+        WHERE 1 = 1
+        <if test="userId != null">
+            AND a.home_user_id = #{userId}
+        </if>
+        <if test="region != null and region != ''">
+            AND a.region = #{region}
+        </if>
+        <if test="price != null and price != ''">
+            AND a.price = #{price}
+        </if>
+        <if test="area != null and area != ''">
+            AND a.area = #{area}
+        </if>
+        <if test="intentions != null and intentions != ''">
+            AND a.intentions = #{intentions}
+        </if>
+        <if test="label != null">
+            AND JSON_CONTAINS(a.label,JSON_ARRAY(
+            <foreach collection="label" item="lab" index="index" separator=",">
+                #{lab}
+            </foreach>
+            ))
+        </if>
+        <if test="phone != null and phone != ''">
+            AND a.phone LIKE CONCAT('%', #{phone}, '%')
+        </if>
+        <if test="startTime != null">
+            AND DATE_FORMAT(a.create_time ,'%Y-%m-%d') <![CDATA[>=]]> DATE_FORMAT(#{startTime} ,'%Y-%m-%d')
+        </if>
+        <if test="endTime != null">
+            AND DATE_FORMAT(a.create_time ,'%Y-%m-%d') <![CDATA[<=]]> DATE_FORMAT(#{endTime} ,'%Y-%m-%d')
+        </if>
+        <if test="aiConsultantId != null">
+            AND a.ai_consultant_id = #{aiConsultantId}
+        </if>
+
+    </select>
+
+</mapper>
